@@ -1,0 +1,33 @@
+# Cepegra Welcome
+## Accueil
+- Un formulaire avec :
+	- Capture d'un selfie
+	- Nom
+	- Prénom
+	- Email
+	- Type de visite :
+		- Suivre une formation
+			- Liste déroulante avec les formations du jour
+		- Rencontrer une personne
+			- Input type text avec autocomplétion sur les membres du personnel
+
+- L'application génère une étiquette avec :
+	- Nom et prénom du visiteur
+	- QR code avec key unique de visite
+	- N° de salle où le visiteur doit se rendre
+	- Si rencontre d'une personne :
+		- Nom et prénom du visité
+		- N° de téléphone interne du visité
+	- Si cours, intitulé du cours
+
+Le système enregistre la date et heure d'entrée.
+
+## Sortie
+Le visiteur scanne son QR code et le système renregistre son heure de sortie.
+
+## Revisite
+Le visiteur scanne son QR code reçu le jour précédent et le système enregistre la date et heure d'entrée.
+
+## Sécurité
+- Les données internes (visités, cours, salles) seront fournies rapidement. Ces données seront stockées en externe et accessibles via une API.
+- Les données sur les visiteurs, plus sensibles, seront stockées dans la database de l'application.

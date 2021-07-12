@@ -1,0 +1,22 @@
+.form{
+  &__text{
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* all inputs */
+.input{
+
+  order: 1;
+  
+  &--text{
+    height: 40px;
+    border: 1px solid $color--1;
+    padding: 10px;
+  }
+}
+
+.label{
+  order: 0;
+}

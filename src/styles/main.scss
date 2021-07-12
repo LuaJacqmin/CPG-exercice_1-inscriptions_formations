@@ -1,0 +1,22 @@
+/* SCSS imports */
+@import 'variables/variables';
+@import 'utils/normalize';
+@import 'utils/grids';
+
+
+/* import your style files below */
+//all components files
+@import 'components/texts';
+@import 'components/btn';
+@import 'components/img';
+@import 'components/form';
+
+//all layout files
+@import 'layout/wrapper';
+@import 'layout/header';
+@import 'layout/hero';
+
+/* make sure this import stayed below all */
+@import 'utils/globalClass';
+
+/* if you just us css and not scss, delete all import above this comment and just write css here instead */
