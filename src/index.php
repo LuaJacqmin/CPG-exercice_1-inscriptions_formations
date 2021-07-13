@@ -1,6 +1,12 @@
 <?php
-  require('config.php'); 
-  include('createDB.php');
+  define('MODE','dev'); // dev ou prod !! change before building
+
+  if(MODE === "dev"):
+    echo MODE;
+    require('config.php'); 
+  else:
+    require('config-distant.php'); 
+  endif;
   if(isset($_POST)):
     unset($_POST);
   endif;

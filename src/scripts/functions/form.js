@@ -101,3 +101,5 @@ const displayLessons = (firebaseURL) => {
       }
 }
 // 
+
+console.log(process.env.NODE_ENV)
