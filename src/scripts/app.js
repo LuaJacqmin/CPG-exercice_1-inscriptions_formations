@@ -1,5 +1,4 @@
 /* SCSS import. Please do not remove*/
-import 'src/.htaccess'
 import '-/main.scss'
 
 /* js import */
