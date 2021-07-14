@@ -9,7 +9,7 @@ $connect = @new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 echo $connect->error;
 
 if ($connect->connect_error) {
-    echo 'Erreur de connexion à la base de données';
+    echo 'Erreur de connexion à la base de données distante';
     exit;
 }
 else {

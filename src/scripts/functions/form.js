@@ -6,114 +6,115 @@ url = "https://firestore.googleapis.com/v1/projects/ingrwf09/databases/(default)
 
 /* if displayed body is form */
 if(document.body.getAttribute('data-page') === "form"){
-/* show searchbar or lessons options after visit type */
-//get DOM elements + declare variables
-const visitOptions = document.querySelector('#visitOptions');
-const trainingOption = document.querySelector('#trainingOption');
-const meetingOption = document.querySelector('#meetingOption');
-const inputRoom = document.querySelector('#inputRoom');
-const inputLink = document.querySelector('#inputLink');
-const inputCrew = document.querySelector('#crewmember-search');
-const listCrew = document.querySelector('#crewmember-answer');
-const listTraining = document.querySelector('#trainingList');
+  /* show searchbar or lessons options after visit type */
 
-let elementsCrew = [];
-let elementsLessons = [`<option value="">Choisissez un cours</option>`];
-let visitType;
+  //get DOM elements + declare variables
+  const visitOptions = document.querySelector('#visitOptions');
+  const trainingOption = document.querySelector('#trainingOption');
+  const meetingOption = document.querySelector('#meetingOption');
+  const inputCrew = document.querySelector('#crewmember-search');
+  const listCrew = document.querySelector('#crewmember-answer');
+  const visiteID = document.querySelector('#visiteID');
+  const listTraining = document.querySelector('#trainingList');
 
-//listen if user chooses an option
-visitOptions.addEventListener('change', e =>{
-  visitType = e.target.value;
+  let elementsCrew = [];
+  let elementsLessons = [`<option value="">Choisissez un cours</option>`];
+  let visitType;
 
-  switch(visitType){
-    case "training":
-      trainingOption.classList.remove('invisible');
-      meetingOption.classList.add('invisible');
-      displayLessons(url+"/planning")
-      break;
+  //listen if user chooses an option
+  visitOptions.addEventListener('change', e =>{
+    visitType = e.target.value;
 
-    case "meeting":
-      meetingOption.classList.remove('invisible');
-      trainingOption.classList.add('invisible');
-      displayCrew(url+"/personnel");
-      addCrewValue()
-      break;
+    switch(visitType){
+      // If training, display available training
+      case "training":
+        trainingOption.classList.remove('invisible');
+        meetingOption.classList.add('invisible');
+        displayLessons(url+"/planning")
+        break;
 
-    default:
-      meetingOption.classList.add('invisible');
-      trainingOption.classList.add('invisible');
-  }
-});
+      // If meeting display an input text 
+      case "meeting":
+        meetingOption.classList.remove('invisible');
+        trainingOption.classList.add('invisible');
+        displayCrew(url+"/personnel");
+        addCrewValue()
+        break;
 
-
-/* display crew members name when user search them */
-//listen if user write smt
-const displayCrew = (firebaseURL) => {
-  inputCrew.addEventListener('input', e => {
-    const searchedCrew = inputCrew.value;
-    if(searchedCrew.length > 2){
-      axios.get(firebaseURL)
-      .then(personnel => {
-        personnel.data.documents.forEach(member => {
-          memberName = member.fields.prenom.stringValue.toLowerCase() + " " + member.fields.nom.stringValue.toLowerCase();
-          if(memberName.includes(searchedCrew.toLowerCase())){
-            elementsCrew = [...elementsCrew , `<li class="crewname" data-name="${memberName}" data-link="${member.name}" data-room="${member.fields.salle.stringValue}" style="text-transform: capitalize">${memberName}</li>`];
-            inputLink.value = member.name;
-            inputRoom.value = member.fields.salle.stringValue;
-          }
-        });
-        listCrew.innerHTML = elementsCrew.join('');
-        elementsCrew = []
-      })
-    } 
-  })
-  
-}
-
-
-/* add value to input when user click on crewmember name */
-const addCrewValue = () => {
-  window.addEventListener('click', e => {
-    const clickedTarget = e.target
-    if(clickedTarget.classList.contains("crewname")){
-      inputCrew.value = clickedTarget.getAttribute('data-name');
-      inputLink.value = clickedTarget.getAttribute('data-link');
-      inputRoom.value = clickedTarget.getAttribute('data-room');
+      // hide all options
+      default:
+        meetingOption.classList.add('invisible');
+        trainingOption.classList.add('invisible');
     }
-  })
-}
+  });
 
-/* display all trainings */
-const displayLessons = (firebaseURL) => {
-  let date = new Date();
-  let today = date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, '0') + "-" + date.getDate(); 
-  //!! january is 0, not 1;
-  
-  axios.get(firebaseURL)
-  .then(dataCours => {
-    const allCours = dataCours.data.documents;
-    allCours.forEach(cours => {
-      if(cours.fields.debut.stringValue === today){
-        axios.get("https://firestore.googleapis.com/v1/"+cours.fields.cours.referenceValue)
-        .then(targetCoursInfos => {
-          console.log(targetCoursInfos)
-          coursName = targetCoursInfos.data.fields.label.stringValue;
-          elementsLessons = [...elementsLessons, `<option id="${coursName}" value="${coursName}" data-link="${targetCoursInfos.data.name}" data-room="${cours.fields.salle.stringValue}">${coursName}</option>`];
-          console.log(elementsLessons);
-          listTraining.innerHTML = elementsLessons;
+
+  /* display crew members name when user search them */
+  const displayCrew = (firebaseURL) => {
+    //listen if user write somthing
+    inputCrew.addEventListener('input', e => {
+      const searchedCrew = inputCrew.value;
+      // if at least 2 char are written
+      if(searchedCrew.length >= 2){
+        //make axios request
+        axios.get(firebaseURL)
+        .then(personnel => {
+          //for each member
+          personnel.data.documents.forEach(member => {
+            memberName = member.fields.prenom.stringValue.toLowerCase() + " " + member.fields.nom.stringValue.toLowerCase();
+            //if value of input is contained in the name or firstname of person
+            if(memberName.includes(searchedCrew.toLowerCase())){
+              //add an li element with information about the person
+              elementsCrew = [...elementsCrew , `<li class="crewname" data-id="${member.name}" data-name="${memberName}" style="text-transform: capitalize">${memberName}</li>`];
+              visiteID.value = "https://firestore.googleapis.com/v1/" + member.name;
+            }
+          });
+          listCrew.innerHTML = elementsCrew.join('');
+          elementsCrew = []
         })
+      } 
+    })
+  }
+
+
+  /* add value to input when user click on crewmember name */
+  const addCrewValue = () => {
+    //when user clicks on name of the person
+    window.addEventListener('click', e => {
+      const clickedTarget = e.target;
+      //input value turns into their name
+      if(clickedTarget.classList.contains("crewname")){
+        visiteID.value = "https://firestore.googleapis.com/v1/" + clickedTarget.getAttribute('data-id');
+        inputCrew.value = clickedTarget.getAttribute('data-name');
       }
     })
-  })
-}
+  }
 
-/* change value input hidden when select lesson */
-listTraining.addEventListener('change', e => {
-  targetSelect = e.target;
-  choice = targetSelect.value;
-  const option = document.querySelector("#"+targetSelect.value)
-  inputLink.value = option.getAttribute('data-link');
-  inputRoom.value = option.getAttribute('data-room')
-})
-}
+  /* display all trainings */
+  const displayLessons = (firebaseURL) => {
+    //get the date of the day to display onlye lesson that starts today
+    let date = new Date();
+    let today = date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, '0') + "-" + date.getDate(); 
+    //!! january is 0, not 1;
 
+    //axios request
+    axios.get(firebaseURL)
+    .then(dataCours => {
+      //get informations we need 
+      const allCours = dataCours.data.documents;
+      // for each lessons, test if starts day is today
+      allCours.forEach(cours => {
+        if(cours.fields.debut.stringValue === today){
+          //if so, axios request on the lesson
+          axios.get("https://firestore.googleapis.com/v1/"+cours.fields.cours.referenceValue)
+          .then(targetCoursInfos => {
+            coursName = targetCoursInfos.data.fields.label.stringValue;
+            //create an li with all information needed
+            elementsLessons = [...elementsLessons, `<option value="${"https://firestore.googleapis.com/v1/"+cours.name}">${coursName}</option>`];
+            listTraining.innerHTML = elementsLessons;
+          })
+        }
+      })
+    })
+  }
+}

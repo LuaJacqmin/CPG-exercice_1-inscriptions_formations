@@ -7,7 +7,7 @@ define('DB_NAME','cpg_register_db');
 $connect = @new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
 if ($connect->connect_error) {
-    echo 'Erreur de connexion à la base de données';
+    echo 'Erreur de connexion à la base de données locale';
     exit;
 }
 else {

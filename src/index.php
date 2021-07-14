@@ -16,25 +16,25 @@
             <div data-step="1" id="form-step-1">
               <div class="form__text">
                 <input class="input input--text input--step1" type="text" name="name" id="" placeholder="Nom">
-                <label class="label label--text" for="name">Votre nom</label>
+                <label class="label label--text" for="name">Votre nom *</label>
               </div> 
               <div class="form__text">
                 <input class="input input--text input--step1" type="text" name="firstname" id="" placeholder="Prénom">
-                <label class="label label--text" for="firstname">Votre prénom</label>
+                <label class="label label--text" for="firstname">Votre prénom *</label>
               </div>
               <div class="form__text">
                 <input class="input input--text input--step1" type="mail" name="email" id="input-email" placeholder="Email">
-                <label class="label label--text" for="email">Votre email</label>
+                <label class="label label--text" for="email">Votre email *</label>
               </div>
               <div class="form__file">
-                <label for="image">Prenez une photo de vous-même</label>
-                <input type="file" name="picture" id="picture" capture>
+                <label for="image">Prenez une photo de vous-même *</label>
+                <input type="file" name="picture" id="picture" class="input--step1" capture>
               </div>
               <button class="btn" id="nextStep">Suivant</button>
             </div>
             <div data-step="2" id="form-step-2" class="invisible">
               <div class="form__select">
-                <select name="visite" id="visitOptions" class="input">
+                <select name="visit" id="visitOptions" class="input input--step2">
                   <option value="">Sélectionnez une option</option>
                   <option value="training">Suivre une formation</option>
                   <option value="meeting">Rencontrer une personne</option>
@@ -42,19 +42,18 @@
                 <label class="label label--select">Type de visite</label>
               </div>
               <div id="trainingOption" class="form__select invisible">
-                <select name="training" id="trainingList"></select>
+                <select name="training" id="trainingList" class="input--step2"></select>
                 <label form="training" class="label label--select">Choisir sa formation</label>
-                <input type="hidden" name="room">
               </div>
               <div id="meetingOption" class="invisible">
-                <input class="input input--text" type="text" name="crewmember" id="crewmember-search">
+                <input class="input input--text input--step2" type="text" name="" id="crewmember-search">
                 <label for="">Veuillez entrer le nom de votre formateur</label>
+                <input type="hidden" name="meeting" id="visiteID">
                 <ul id="crewmember-answer"></ul>
               </div>
-              <input type="hidden" name="room" id="inputRoom">
-              <input type="hidden" name="link" id="inputLink">
               <button class="btn" type="submit" id="submitForm">Envoyer</button>
             </div>
+            <small>* obligatoire</small>
             <div id="alertbox"></div>
           </form>
         </div>
