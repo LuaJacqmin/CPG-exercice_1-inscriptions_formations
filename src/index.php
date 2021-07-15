@@ -28,7 +28,8 @@
               </div>
               <div class="form__file">
                 <label for="image">Prenez une photo de vous-même *</label>
-                <input type="file" name="picture" id="picture" class="input--step1" capture>
+                <input id="imageInput" type="file" name="picture" id="picture" class="input--step1" capture>
+                <img id="imageReturn" src="" alt="" class="img invisible">
               </div>
               <button class="btn" id="nextStep">Suivant</button>
             </div>
@@ -57,6 +58,9 @@
             <div id="alertbox"></div>
           </form>
         </div>
+      </div>
+      <div class="wrapper">
+        <a href="scan.php">scanner mon id</a>
       </div>
     </section>
   </main>

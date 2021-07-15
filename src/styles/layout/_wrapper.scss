@@ -1,6 +1,6 @@
 .wrapper{
   @include topPadding(80px);
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-flow: column;
   justify-content: center;

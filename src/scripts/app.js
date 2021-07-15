@@ -9,7 +9,7 @@ import '#/config/grids.js' // but you can remove this one
 //functions
 import'#/functions/steps.js'
 import'#/functions/form.js'
-
+import'#/functions/qrcode.js'
 /* import your files below */
 
 

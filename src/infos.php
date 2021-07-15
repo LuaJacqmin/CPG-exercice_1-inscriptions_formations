@@ -30,16 +30,15 @@
 
   //get id of guest
   if($guest->num_rows > 0):
-    while($oneElement = $guest->fetch_array()):
+    while($oneElement = $guest->fetch_object()):
       $guest_elements[] = $oneElement;
     endwhile;
   endif;
 
-
   //insert visit
     $post_visit = sprintf(
       "INSERT INTO `lj_visites` SET id_guests=%d, link='%s'",
-      $guest_elements[0]['id_guests'],
+      $guest_elements[0]->id_guests,
       $_POST['visit'] === "training" ? $_POST['training']  : $_POST['meeting']
     );
 
@@ -47,20 +46,26 @@
     $idvisits = $connect->insert_id;
     // echo $idvisits;
     echo $connect->error;
+    //isert id_first_visit
+
+    $post_visit_id = sprintf(
+      "UPDATE `lj_visites` SET id_first_visit=%d WHERE id_visits=%d",
+      $idvisits,
+      $idvisits
+    );
+
+    $connect->query($post_visit_id);
+
 ?>
 
-<body>
+<body data-page="infos">
   <h1>Cepegra</h1>
   <main>
     <section class="wrapper wrapper--full">
     <div>
       <h2><?php echo $_POST['firstname']?> <?php echo $_POST['name']?></h2>
-      <div>
-        <?php 
-           QRcode::png($idvisits) ;
-        ?>
-      </div>
-      <p><?php echo $idvisits ?></p>
+      <canvas id="qrcode"></canvas>
+      <p id="id_visit" data-id="<?php echo $idvisits ?>"><?php echo $idvisits ?></p>
 
       <?php if($_POST['visit'] === "training" ): ?>
         <!-- get all infos about lessons at firebase url -->
@@ -83,11 +88,13 @@
           $data = json_decode($json);
         ?>
         <p>Vous avez RDV avec <?php echo $data->fields->prenom->stringValue; ?> <?php echo $data->fields->nom->stringValue; ?></p>
-        <p>N° de téléphone : <?php echo $data->fields->tel->stringValue; ?></p>
+        <?php if(isset($data->fields->tel->stringValue)): ?>
+          <p>N° de téléphone : <?php echo $data->fields->tel->stringValue; ?></p>
+        <?php endif;?>
       <?php endif; ?>
       <p>Salle : <?php echo $data->fields->salle->stringValue; ?></p>
     </div>
-    <a href="sortie.php">Sortir</a>
+    <a href="scan.php">Scanner mon id</a>
     </section>
   </main>
 </body>

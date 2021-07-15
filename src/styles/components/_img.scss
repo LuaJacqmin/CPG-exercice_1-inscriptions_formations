@@ -1,9 +1,7 @@
 /* stylise imgs */
 .img{
-  @media (min-width: $tabletBP){
-  }
-  
-  @media (min-width: $deskBP){
-  }
-
+  display: block;
+  width : 500px;
+  height : 300px;
+  object-fit: cover;
 }

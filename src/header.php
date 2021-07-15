@@ -1,5 +1,5 @@
 <?php
-  define('MODE','dev'); // dev ou prod !! change before building
+  define('MODE','prod'); // dev ou prod !! change before building
 
   if(MODE === "dev"):
     require('config.php'); 
@@ -45,5 +45,6 @@
   <meta property="twitter:title" content="Change your title name here">
   <meta property="twitter:description" content="Change your description here. That what would appen when we see a thumbnail of you website on socials or google">
   <meta property="twitter:image" content="./assets/logo/meta-img.png">
+  <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 </head>
 
